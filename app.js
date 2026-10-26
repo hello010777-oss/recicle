@@ -416,13 +416,26 @@ const closeVictoryModalBtn = document.getElementById('closeVictoryModalBtn');
 const restartFromVictoryBtn = document.getElementById('restartFromVictoryBtn');
 
 // ============================================================================
-// 효과음 생성기 (Web Audio API)
+// 효과음 생성기 (Web Audio API - 단일 AudioContext 재사용으로 윈도우 브라우저 제한 방지)
 // ============================================================================
+let sharedAudioCtx = null;
+
+function getAudioContext() {
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) return null;
+  if (!sharedAudioCtx || sharedAudioCtx.state === 'closed') {
+    sharedAudioCtx = new AudioCtx();
+  }
+  if (sharedAudioCtx.state === 'suspended') {
+    sharedAudioCtx.resume().catch(() => {});
+  }
+  return sharedAudioCtx;
+}
+
 function playCuteSound(type) {
   try {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtx) return;
-    const ctx = new AudioCtx();
+    const ctx = getAudioContext();
+    if (!ctx) return;
     const now = ctx.currentTime;
 
     if (type === 'scan') {
@@ -473,9 +486,10 @@ function playCuteSound(type) {
 }
 
 // ============================================================================
-// 파트별 한국어 남성 음성 안내 (원하는 부분만 나눠서 듣고 멈출 수 있는 기능)
+// 파트별 한국어 남성 음성 안내 (윈도우 Chrome/Edge SAPI 음성 끊김 방지 적용)
 // ============================================================================
 let cachedKoreanVoices = [];
+let speechTimerId = null;
 
 function loadVoices() {
   if (!('speechSynthesis' in window)) return;
@@ -514,9 +528,14 @@ function resetSpeakButtonLabels() {
 }
 
 function stopSpeaking() {
+  if (speechTimerId) {
+    clearTimeout(speechTimerId);
+    speechTimerId = null;
+  }
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
   }
+  window._activeUtterance = null;
   resetSpeakButtonLabels();
 }
 
@@ -535,7 +554,8 @@ function speakSection(sectionType) {
 
   stopSpeaking();
 
-  const item = RECYCLING_ITEMS[currentItemIndex];
+  const safeIndex = currentItemIndex >= 0 ? currentItemIndex : 0;
+  const item = RECYCLING_ITEMS[safeIndex];
   const plainDesc = item.description.replace(/<[^>]*>/g, '');
   let textToRead = '';
   let targetBtn = null;
@@ -553,34 +573,40 @@ function speakSection(sectionType) {
 
   if (!textToRead || !targetBtn) return;
 
-  try {
-    activeSpeechSection = sectionType;
-    targetBtn.classList.add('speaking');
-    targetBtn.textContent = '⏹️ 듣기 멈추기';
+  activeSpeechSection = sectionType;
+  targetBtn.classList.add('speaking');
+  targetBtn.textContent = '⏹️ 듣기 멈추기';
 
-    const utter = new SpeechSynthesisUtterance(textToRead);
-    utter.lang = 'ko-KR';
+  // 윈도우 Chrome/Edge에서 cancel() 직후 speak() 호출 시 음성이 씹히는 현상 방지
+  speechTimerId = setTimeout(() => {
+    try {
+      const utter = new SpeechSynthesisUtterance(textToRead);
+      window._activeUtterance = utter; // 가비지 컬렉션으로 인한 중간 끊김 방지
+      utter.lang = 'ko-KR';
 
-    const maleVoice = getKoreanMaleVoice();
-    if (maleVoice) {
-      utter.voice = maleVoice;
+      const maleVoice = getKoreanMaleVoice();
+      if (maleVoice) {
+        utter.voice = maleVoice;
+      }
+
+      // 남성 목소리 톤으로 낮고 또렷하게 설정
+      utter.rate = 0.98;
+      utter.pitch = sectionType === 'wrong' ? 0.62 : 0.72;
+
+      utter.onend = () => {
+        window._activeUtterance = null;
+        resetSpeakButtonLabels();
+      };
+      utter.onerror = () => {
+        window._activeUtterance = null;
+        resetSpeakButtonLabels();
+      };
+
+      window.speechSynthesis.speak(utter);
+    } catch (e) {
+      resetSpeakButtonLabels();
     }
-
-    // 남성 목소리 톤으로 낮고 또렷하게 설정
-    utter.rate = 0.98;
-    utter.pitch = sectionType === 'wrong' ? 0.62 : 0.72;
-
-    utter.onend = () => {
-      resetSpeakButtonLabels();
-    };
-    utter.onerror = () => {
-      resetSpeakButtonLabels();
-    };
-
-    window.speechSynthesis.speak(utter);
-  } catch (e) {
-    resetSpeakButtonLabels();
-  }
+  }, 60);
 }
 
 // 토스트 메시지 표시
@@ -604,15 +630,25 @@ function checkAllMissionsCompleted() {
 
     if ('speechSynthesis' in window) {
       stopSpeaking();
-      const utter = new SpeechSynthesisUtterance(
-        '우와! 아홉 가지 분리수거 미션을 모두 성공해서 쓰레기 괴물을 완전히 물리쳤어요! 이제 우리 동네와 지구가 반짝반짝 깨끗해졌어요!'
-      );
-      utter.lang = 'ko-KR';
-      const maleVoice = getKoreanMaleVoice();
-      if (maleVoice) utter.voice = maleVoice;
-      utter.rate = 0.98;
-      utter.pitch = 0.72;
-      window.speechSynthesis.speak(utter);
+      speechTimerId = setTimeout(() => {
+        try {
+          const utter = new SpeechSynthesisUtterance(
+            '우와! 아홉 가지 분리수거 미션을 모두 성공해서 쓰레기 괴물을 완전히 물리쳤어요! 이제 우리 동네와 지구가 반짝반짝 깨끗해졌어요!'
+          );
+          window._activeUtterance = utter;
+          utter.lang = 'ko-KR';
+          const maleVoice = getKoreanMaleVoice();
+          if (maleVoice) utter.voice = maleVoice;
+          utter.rate = 0.98;
+          utter.pitch = 0.72;
+          utter.onend = () => {
+            window._activeUtterance = null;
+          };
+          window.speechSynthesis.speak(utter);
+        } catch (e) {
+          // 무시
+        }
+      }, 60);
     }
   }
 }
