@@ -1,0 +1,9 @@
+{
+  "name": "earth-guardian-recycling",
+  "version": "1.0.0",
+  "private": true,
+  "description": "삐뽀삐뽀! 지구지킴이 탐험대 - AI 분리수거 교육 웹앱",
+  "scripts": {
+    "build": "echo 'Static site - no build step required'"
+  }
+}

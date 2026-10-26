@@ -11,7 +11,23 @@ const RECYCLING_ITEMS = [
     fullTitle: '1. 페트병 병뚜껑 분리하기',
     emoji: '🍼',
     aiLabel: '투명 페트병 (PET)',
-    aiKeywords: ['bottle', 'water bottle', 'pop bottle', 'soda bottle', 'plastic bottle', 'vase', 'pitcher'],
+    aiKeywords: [
+      'bottle',
+      'water bottle',
+      'pop bottle',
+      'soda bottle',
+      'plastic bottle',
+      'beer bottle',
+      'wine bottle',
+      'vase',
+      'pitcher',
+      'jug',
+      'carafe',
+      'beaker',
+      'flask',
+      'canteen',
+      'dispenser'
+    ],
     description:
       '이 물건은 물이나 음료수를 담는 <strong>투명 페트병(PET)</strong>이에요! 병 몸통은 투명한 플라스틱이지만, 겉에 붙은 비닐 라벨과 병뚜껑은 서로 다른 재질로 만들어져 있어요.',
     wrongMethods: [
@@ -35,7 +51,20 @@ const RECYCLING_ITEMS = [
     fullTitle: '2. 우유갑 헹구고 펼치기',
     emoji: '🥛',
     aiLabel: '종이팩 / 우유갑',
-    aiKeywords: ['milk', 'milk can', 'carton', 'juice', 'packet', 'coffee mug'],
+    aiKeywords: [
+      'milk',
+      'milk can',
+      'juice',
+      'packet',
+      'coffee mug',
+      'mug',
+      'espresso',
+      'cream',
+      'lotion',
+      'sunscreen',
+      'soap dispenser',
+      'washbasin'
+    ],
     description:
       '이 물건은 고소한 우유나 주스를 담는 <strong>우유갑(종이팩)</strong>이에요! 일반 종이처럼 보이지만 물에 젖지 않도록 안쪽과 바깥쪽에 얇은 비닐 코팅이 되어 있는 고급 천연펄프 종이팩이랍니다.',
     wrongMethods: [
@@ -59,7 +88,25 @@ const RECYCLING_ITEMS = [
     fullTitle: '3. 플라스틱 용기 씻어 버리기',
     emoji: '🥡',
     aiLabel: '플라스틱 배달·음식 용기',
-    aiKeywords: ['bowl', 'cup', 'soup bowl', 'mixing bowl', 'tub', 'tray', 'plate', 'tupperware'],
+    aiKeywords: [
+      'bowl',
+      'cup',
+      'soup bowl',
+      'mixing bowl',
+      'tub',
+      'tray',
+      'plate',
+      'tupperware',
+      'measuring cup',
+      'bucket',
+      'pail',
+      'basin',
+      'pot',
+      'dish',
+      'petri dish',
+      'crock pot',
+      'frying pan'
+    ],
     description:
       '이 물건은 음식을 담았던 <strong>플라스틱 용기</strong>예요! 도시락통, 요거트 통, 배달 용기처럼 가볍고 단단한 플라스틱으로 만들어져 깨끗하면 다시 플라스틱으로 태어날 수 있어요.',
     wrongMethods: [
@@ -83,7 +130,23 @@ const RECYCLING_ITEMS = [
     fullTitle: '4. 캔 찌그러트리기',
     emoji: '🥫',
     aiLabel: '알루미늄·철 캔',
-    aiKeywords: ['can', 'beer can', 'soda can', 'tin can', 'pop', 'oil filter', 'cocktail shaker'],
+    aiKeywords: [
+      'can',
+      'beer can',
+      'soda can',
+      'tin can',
+      'pop',
+      'oil filter',
+      'cocktail shaker',
+      'saltshaker',
+      'canister',
+      'cylinder',
+      'barrel',
+      'drum',
+      'aerosol',
+      'hair spray',
+      'thermos'
+    ],
     description:
       '이 물건은 음료수나 통조림이 들어있는 <strong>금속 캔(알루미늄·철 캔)</strong>이에요! 캔은 잘 재활용하면 새 캔으로 무한히 다시 태어날 수 있는 소중한 금속 자원이에요.',
     wrongMethods: [
@@ -107,7 +170,21 @@ const RECYCLING_ITEMS = [
     fullTitle: '5. 박스 테이프 뜯고 압착하기',
     emoji: '📦',
     aiLabel: '택배 종이 박스',
-    aiKeywords: ['box', 'carton', 'crate', 'cardboard', 'chest', 'ashcan', 'hamper'],
+    aiKeywords: [
+      'box',
+      'carton',
+      'crate',
+      'cardboard',
+      'chest',
+      'ashcan',
+      'hamper',
+      'suitcase',
+      'package',
+      'parcel',
+      'tissue box',
+      'pencil box',
+      'mailbox'
+    ],
     description:
       '이 물건은 택배나 선물을 담아 오는 <strong>골판지 종이 박스</strong>예요! 종이 박스는 훌륭한 재활용 종이지만, 겉에 붙은 비닐 테이프와 운송장 스티커는 종이가 아니에요.',
     wrongMethods: [
@@ -131,7 +208,24 @@ const RECYCLING_ITEMS = [
     fullTitle: '6. 건전지 골라내기',
     emoji: '🔋',
     aiLabel: '다 쓴 폐건전지',
-    aiKeywords: ['battery', 'remote control', 'flashlight', 'lighter', 'lipstick', 'torch', 'cell'],
+    aiKeywords: [
+      'battery',
+      'remote control',
+      'remote',
+      'flashlight',
+      'lighter',
+      'lipstick',
+      'torch',
+      'cell',
+      'spark plug',
+      'whistle',
+      'USB',
+      'modem',
+      'power',
+      'switch',
+      'microphone',
+      'joystick'
+    ],
     description:
       '이 물건은 장난감이나 리모컨에 들어가는 <strong>건전지(폐건전지)</strong>예요! 건전지 안에는 철, 아연, 니켈 같은 금속도 있지만 잘못 버리면 땅과 물을 오염시키는 위험한 물질도 들어있어요.',
     wrongMethods: [
@@ -155,7 +249,21 @@ const RECYCLING_ITEMS = [
     fullTitle: '7. 약은 따로 버리기',
     emoji: '💊',
     aiLabel: '먹다 남은 폐의약품(약)',
-    aiKeywords: ['pill bottle', 'medicine chest', 'band aid', 'syringe', 'ointment', 'vitamin', 'capsule'],
+    aiKeywords: [
+      'pill bottle',
+      'medicine chest',
+      'band aid',
+      'syringe',
+      'ointment',
+      'vitamin',
+      'capsule',
+      'pill',
+      'tablet',
+      'drug',
+      'vial',
+      'dropper',
+      'first aid'
+    ],
     description:
       '이 물건은 유통기한이 지났거나 먹다 남은 <strong>약(폐의약품: 알약, 물약, 연고)</strong>이에요! 약은 화학 성분으로 되어 있어서 일반 쓰레기나 하수구에 버리면 강물과 토양이 아프게 돼요.',
     wrongMethods: [
@@ -179,7 +287,29 @@ const RECYCLING_ITEMS = [
     fullTitle: '8. 날카로운 물건은 감싸서 버리기',
     emoji: '✂️',
     aiLabel: '깨진 유리·가위·칼 등 날카로운 물건',
-    aiKeywords: ['scissors', 'knife', 'cleaver', 'letter opener', 'wine glass', 'goblet', 'fork', 'can opener'],
+    aiKeywords: [
+      'scissors',
+      'knife',
+      'cleaver',
+      'letter opener',
+      'wine glass',
+      'goblet',
+      'fork',
+      'can opener',
+      'corkscrew',
+      'screwdriver',
+      'razor',
+      'blade',
+      'nail',
+      'pin',
+      'needle',
+      'shears',
+      'scalpel',
+      'hatchet',
+      'hammer',
+      'pliers',
+      'spatula'
+    ],
     description:
       '이 물건은 <strong>깨진 유리, 낡은 가위, 칼날처럼 날카로운 물건</strong>이에요! 날카로운 부분이 그대로 드러나 있으면 쓰레기를 치워주시는 환경미화원 아저씨·아주머니나 이웃이 크게 다칠 수 있어요.',
     wrongMethods: [
@@ -203,7 +333,27 @@ const RECYCLING_ITEMS = [
     fullTitle: '9. 오염된 종이 제거하기 (종이는 무조건 다 된다 X!)',
     emoji: '🧻',
     aiLabel: '오염된 종이·영수증·휴지',
-    aiKeywords: ['paper towel', 'toilet tissue', 'menu', 'envelope', 'book', 'comic book', 'napkin', 'handkerchief'],
+    aiKeywords: [
+      'paper towel',
+      'toilet tissue',
+      'tissue',
+      'menu',
+      'envelope',
+      'book',
+      'comic book',
+      'napkin',
+      'handkerchief',
+      'notebook',
+      'binder',
+      'newspaper',
+      'magazine',
+      'receipt',
+      'paper',
+      'towel',
+      'bib',
+      'diaper',
+      'wrapper'
+    ],
     description:
       '이 물건은 <strong>음식물·기름이 묻은 종이, 사용한 휴지, 영수증(감열지)</strong>이에요! <strong>"종이는 무조건 다 재활용된다? 삐빅! 아니에요(X)!"</strong> 기름이나 오물이 묻은 종이와 영수증, 코팅된 종이는 재활용이 되지 않아요.',
     wrongMethods: [
@@ -639,21 +789,43 @@ function resetGame() {
 }
 
 // ============================================================================
-// 실시간 AI 카메라 & TensorFlow.js 물건 인식 로직 (초록색 물체 감지 아이콘/박스 없이 깔끔한 카메라 화면)
+// 실시간 AI 카메라 & TensorFlow.js 물건 인식 로직
 // ============================================================================
+let modelsLoadingPromise = null;
+
 async function loadAIModels() {
-  try {
-    aiStatusBadge.textContent = '🤖 AI 비전 모델 로딩 중...';
-    if (window.cocoSsd) {
-      cocoModel = await window.cocoSsd.load();
+  if (cocoModel && mobilenetModel) return;
+  if (modelsLoadingPromise) return modelsLoadingPromise;
+
+  modelsLoadingPromise = (async () => {
+    try {
+      aiStatusBadge.textContent = '🤖 AI 비전 모델 로딩 중...';
+      if (window.tf && window.tf.ready) {
+        await window.tf.ready();
+      }
+      const tasks = [];
+      if (window.cocoSsd && !cocoModel) {
+        tasks.push(
+          window.cocoSsd.load({ base: 'lite_mobilenet_v2' }).then((m) => {
+            cocoModel = m;
+          })
+        );
+      }
+      if (window.mobilenet && !mobilenetModel) {
+        tasks.push(
+          window.mobilenet.load({ version: 2, alpha: 1.0 }).then((m) => {
+            mobilenetModel = m;
+          })
+        );
+      }
+      await Promise.allSettled(tasks);
+      aiStatusBadge.textContent = '🤖 AI 카메라 준비 완료';
+    } catch (err) {
+      aiStatusBadge.textContent = '🤖 AI 스마트 인식 모드';
     }
-    if (window.mobilenet) {
-      mobilenetModel = await window.mobilenet.load();
-    }
-    aiStatusBadge.textContent = '🤖 AI 카메라 준비 완료';
-  } catch (err) {
-    aiStatusBadge.textContent = '🤖 AI 스마트 인식 모드';
-  }
+  })();
+
+  return modelsLoadingPromise;
 }
 
 function mapPredictionToRecyclingIndex(labelString) {
@@ -662,15 +834,15 @@ function mapPredictionToRecyclingIndex(labelString) {
   for (let i = 0; i < RECYCLING_ITEMS.length; i++) {
     const item = RECYCLING_ITEMS[i];
     for (const kw of item.aiKeywords) {
-      if (lower.includes(kw)) {
+      if (lower.includes(kw.toLowerCase())) {
         return i;
       }
     }
   }
 
-  if (lower.includes('glass') || lower.includes('cup')) return 2;
+  if (lower.includes('glass') || lower.includes('cup') || lower.includes('plastic')) return 2;
   if (lower.includes('paper') || lower.includes('tissue') || lower.includes('towel')) return 8;
-  if (lower.includes('cell phone') || lower.includes('mouse')) return 5;
+  if (lower.includes('cell phone') || lower.includes('mouse') || lower.includes('electronic')) return 5;
   return -1;
 }
 
@@ -681,11 +853,21 @@ async function startWebcam() {
   }
 
   try {
-    webcamStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment', width: { ideal: 640 }, height: { ideal: 480 } },
-      audio: false
-    });
+    // PC(노트북 웹캠)와 모바일(후면 카메라) 모두 호환되도록 설정
+    try {
+      webcamStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: 'environment' }, width: { ideal: 640 }, height: { ideal: 480 } },
+        audio: false
+      });
+    } catch (firstErr) {
+      webcamStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false
+      });
+    }
+
     webcamVideo.srcObject = webcamStream;
+    await webcamVideo.play().catch(() => {});
     cameraPlaceholder.classList.add('hidden');
     uploadedImagePreview.classList.add('hidden');
     toggleCameraBtn.classList.remove('hidden');
@@ -704,47 +886,74 @@ function stopWebcam() {
   toggleCameraBtn.classList.add('hidden');
 }
 
+// 비디오나 이미지를 오프스크린 캔버스에 캡처해 WebGL 텍스처 오류 없이 정확히 인식
+function createSnapshotCanvas(sourceEl) {
+  const canvas = document.createElement('canvas');
+  const w = sourceEl.videoWidth || sourceEl.naturalWidth || sourceEl.width || 640;
+  const h = sourceEl.videoHeight || sourceEl.naturalHeight || sourceEl.height || 480;
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(sourceEl, 0, 0, w, h);
+  return canvas;
+}
+
+async function recognizeElementWithAI(targetElement) {
+  await loadAIModels();
+
+  const snapshot = createSnapshotCanvas(targetElement);
+  let matchedIndex = -1;
+
+  // 1차: COCO-SSD 객체 탐지 (임계값 0.20으로 낮추어 작은 물체도 잘 잡히도록 개선)
+  if (cocoModel) {
+    try {
+      const predictions = await cocoModel.detect(snapshot, 10, 0.2);
+      const filtered = predictions
+        .filter((p) => p.class !== 'person')
+        .sort((a, b) => b.score - a.score);
+
+      for (const p of filtered) {
+        const idx = mapPredictionToRecyclingIndex(p.class);
+        if (idx !== -1) {
+          matchedIndex = idx;
+          break;
+        }
+      }
+    } catch (e) {
+      // 무시
+    }
+  }
+
+  // 2차: MobileNet 이미지 분류 (상위 5개 예측 클래스 전체 검색)
+  if (matchedIndex === -1 && mobilenetModel) {
+    try {
+      const preds = await mobilenetModel.classify(snapshot, 5);
+      for (const p of preds) {
+        const idx = mapPredictionToRecyclingIndex(p.className);
+        if (idx !== -1) {
+          matchedIndex = idx;
+          break;
+        }
+      }
+    } catch (e) {
+      // 무시
+    }
+  }
+
+  return matchedIndex;
+}
+
 async function handleAIScanButton() {
   const targetElement = !uploadedImagePreview.classList.contains('hidden')
     ? uploadedImagePreview
-    : webcamStream
+    : webcamStream && webcamVideo.readyState >= 2
     ? webcamVideo
     : null;
 
   if (targetElement) {
-    let matchedIndex = -1;
-
-    // 스캔 버튼 클릭 시점에 카메라/사진 화면에서 바로 물건 인식
-    if (cocoModel) {
-      try {
-        const predictions = await cocoModel.detect(targetElement);
-        const filtered = predictions.filter((p) => p.score > 0.35 && p.class !== 'person');
-        for (const p of filtered) {
-          const idx = mapPredictionToRecyclingIndex(p.class);
-          if (idx !== -1) {
-            matchedIndex = idx;
-            break;
-          }
-        }
-      } catch (e) {
-        // 무시
-      }
-    }
-
-    if (matchedIndex === -1 && mobilenetModel) {
-      try {
-        const preds = await mobilenetModel.classify(targetElement);
-        for (const p of preds) {
-          const idx = mapPredictionToRecyclingIndex(p.className);
-          if (idx !== -1) {
-            matchedIndex = idx;
-            break;
-          }
-        }
-      } catch (e) {
-        // 무시
-      }
-    }
+    aiStatusBadge.textContent = '🔍 AI가 물건 스캔 중...';
+    const matchedIndex = await recognizeElementWithAI(targetElement);
+    aiStatusBadge.textContent = '🤖 AI 카메라 준비 완료';
 
     if (matchedIndex !== -1) {
       triggerAIRecognitionForItem(matchedIndex, '📸 AI 카메라 스캔 완료');
@@ -771,19 +980,10 @@ imageUploadInput.addEventListener('change', (e) => {
       const fileNameLower = file.name.toLowerCase();
       let matchedIndex = mapPredictionToRecyclingIndex(fileNameLower);
 
-      if (matchedIndex === -1 && mobilenetModel) {
-        try {
-          const preds = await mobilenetModel.classify(uploadedImagePreview);
-          for (const p of preds) {
-            const idx = mapPredictionToRecyclingIndex(p.className);
-            if (idx !== -1) {
-              matchedIndex = idx;
-              break;
-            }
-          }
-        } catch (err) {
-          // 무시
-        }
+      if (matchedIndex === -1) {
+        aiStatusBadge.textContent = '🔍 AI 사진 분석 중...';
+        matchedIndex = await recognizeElementWithAI(uploadedImagePreview);
+        aiStatusBadge.textContent = '🤖 AI 카메라 준비 완료';
       }
 
       if (matchedIndex === -1) {
