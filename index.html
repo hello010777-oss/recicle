@@ -68,7 +68,7 @@
             <label for="imageUploadInput" class="secondary-cute-btn upload-label">
               🖼️ 사진 찍기 / 불러오기
             </label>
-            <input id="imageUploadInput" type="file" accept="image/*" capture="environment" hidden />
+            <input id="imageUploadInput" type="file" accept="image/*" hidden />
           </div>
         </div>
 
@@ -83,6 +83,9 @@
       <div class="camera-Controls-bar">
         <button id="aiScanNowBtn" class="scan-action-btn" type="button">
           🔍 AI 카메라로 지금 물건 인식하기!
+        </button>
+        <button id="switchCameraBtn" class="mini-cam-btn switch-cam-btn hidden" type="button" title="전면(셀카)/후면 카메라 전환">
+          🔄 카메라 전환
         </button>
         <button id="toggleCameraBtn" class="mini-cam-btn hidden" type="button">
           📴 카메라 끄기

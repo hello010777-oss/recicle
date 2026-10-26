@@ -248,6 +248,10 @@ h1, h2, h3, h4, .app-badge, .step-tag, .pill-btn, .scan-action-btn, .section-spe
   transform: scaleX(-1);
 }
 
+#webcamVideo.rear-cam {
+  transform: scaleX(1);
+}
+
 #overlayCanvas {
   position: absolute;
   inset: 0;
@@ -421,6 +425,11 @@ h1, h2, h3, h4, .app-badge, .step-tag, .pill-btn, .scan-action-btn, .section-spe
   border-radius: 16px;
   padding: 10px 14px;
   box-shadow: var(--shadow-cute-sm);
+}
+
+.switch-cam-btn {
+  background: #FEF3C7;
+  color: #92400E;
 }
 
 /* 9가지 분리수거 물건 그리드 */

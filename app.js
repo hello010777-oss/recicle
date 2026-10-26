@@ -378,6 +378,7 @@ let activeSpeechSection = null; // 'desc' | 'wrong' | 'correct' | null
 
 // 카메라 & AI 모델 상태
 let webcamStream = null;
+let currentFacingMode = 'user'; // 기본값: 전면(셀카) 카메라로 시작 ('user' | 'environment')
 let cocoModel = null;
 let mobilenetModel = null;
 
@@ -404,6 +405,7 @@ const resetGameBtn = document.getElementById('resetGameBtn');
 const webcamVideo = document.getElementById('webcamVideo');
 const cameraPlaceholder = document.getElementById('cameraPlaceholder');
 const startCameraBtn = document.getElementById('startCameraBtn');
+const switchCameraBtn = document.getElementById('switchCameraBtn');
 const toggleCameraBtn = document.getElementById('toggleCameraBtn');
 const aiScanNowBtn = document.getElementById('aiScanNowBtn');
 const imageUploadInput = document.getElementById('imageUploadInput');
@@ -888,11 +890,17 @@ async function startWebcam() {
     return;
   }
 
+  // 기존 스트림이 열려 있으면 먼저 정리
+  if (webcamStream) {
+    webcamStream.getTracks().forEach((track) => track.stop());
+    webcamStream = null;
+  }
+
   try {
-    // PC(노트북 웹캠)와 모바일(후면 카메라) 모두 호환되도록 설정
+    // 휴대폰과 PC 모두 기본으로 전면(셀카: 'user') 카메라로 켜지도록 설정
     try {
       webcamStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: 'environment' }, width: { ideal: 640 }, height: { ideal: 480 } },
+        video: { facingMode: { ideal: currentFacingMode }, width: { ideal: 640 }, height: { ideal: 480 } },
         audio: false
       });
     } catch (firstErr) {
@@ -903,14 +911,23 @@ async function startWebcam() {
     }
 
     webcamVideo.srcObject = webcamStream;
+    webcamVideo.classList.toggle('rear-cam', currentFacingMode === 'environment');
     await webcamVideo.play().catch(() => {});
     cameraPlaceholder.classList.add('hidden');
     uploadedImagePreview.classList.add('hidden');
+    switchCameraBtn.classList.remove('hidden');
     toggleCameraBtn.classList.remove('hidden');
-    showToast('📸 카메라가 켜졌어요! 물건을 비추고 [지금 물건 인식하기] 버튼을 눌러보세요.');
+    showToast('📸 셀카(전면) 카메라가 켜졌어요! 물건을 비추고 [지금 물건 인식하기]를 눌러보세요.');
   } catch (err) {
     showToast('카메라 권한이 없거나 연결된 카메라가 없어요. 물건 카드나 사진을 눌러 스캔해 보세요!');
   }
+}
+
+async function switchCameraFacing() {
+  currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
+  await startWebcam();
+  const modeLabel = currentFacingMode === 'user' ? '전면(셀카) 카메라' : '후면 카메라';
+  showToast(`🔄 ${modeLabel}로 전환했어요!`);
 }
 
 function stopWebcam() {
@@ -919,6 +936,7 @@ function stopWebcam() {
     webcamStream = null;
   }
   cameraPlaceholder.classList.remove('hidden');
+  switchCameraBtn.classList.add('hidden');
   toggleCameraBtn.classList.add('hidden');
 }
 
@@ -1035,7 +1053,11 @@ imageUploadInput.addEventListener('change', (e) => {
 // ============================================================================
 // 이벤트 리스너 연결 및 초기화
 // ============================================================================
-startCameraBtn.addEventListener('click', startWebcam);
+startCameraBtn.addEventListener('click', () => {
+  currentFacingMode = 'user'; // 처음 카메라를 켤 때는 항상 셀카(전면) 카메라로 시작
+  startWebcam();
+});
+switchCameraBtn.addEventListener('click', switchCameraFacing);
 toggleCameraBtn.addEventListener('click', stopWebcam);
 aiScanNowBtn.addEventListener('click', handleAIScanButton);
 
