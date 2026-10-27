@@ -8,10 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <!-- TensorFlow.js & MobileNet / COCO-SSD for Real Camera AI Object Recognition -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
@@ -28,156 +24,89 @@
   <!-- 상단 헤더 -->
   <header class="app-header">
     <div class="header-left">
-      <span class="app-badge">🤖 AI 환경 수비대</span>
+      <span class="app-badge">🌍 어린이 환경 수비대</span>
       <h1>삐뽀삐뽀! <span class="highlight-pink">지구지킴이</span> 탐험대</h1>
-      <p class="subtitle">AI 카메라로 물건을 비추면 어떤 물건인지 설명해주고, <strong>쓰레기 괴물이 추천하는 배출방법</strong>과 <strong>올바른 실천 미션</strong>을 알려줘요!</p>
+      <p class="subtitle">미션 카드를 눌러 물건을 알아보고, <strong>쓰레기 괴물이 추천하는 배출방법</strong>과 <strong>올바른 분리수거 방법</strong>을 한눈에 배워요!</p>
     </div>
     <div class="header-controls">
-      <button id="stopVoiceBtn" class="pill-btn stop-voice-btn" type="button" title="현재 나오는 AI 목소리 멈추기">
-        🔇 목소리 멈추기
-      </button>
+      <div class="header-progress-badge" id="completedCountText">🏆 미션 성공: 0 / 9</div>
       <button id="resetGameBtn" class="pill-btn reset-btn" type="button" title="처음부터 다시 하기">
-        🔄 처음부터
+        🔄 처음부터 다시 하기
       </button>
     </div>
   </header>
 
-  <!-- 메인 레이아웃 (STEP 1 & STEP 2 2단 구성) -->
+  <!-- 메인 레이아웃 (왼쪽: 큼직한 9가지 미션 & 성공 버튼 / 오른쪽: 물건 설명 + 쓰레기 괴물 + 올바른 분리수거 방법 한눈에 보기) -->
   <main class="main-container">
-    <!-- 왼쪽: STEP 1 AI 카메라 & 9가지 분리수거 물건 선택 영역 -->
-    <section class="panel camera-panel" aria-label="AI 카메라 물건 인식">
+    <!-- 왼쪽 패널: 9가지 분리수거 미션 & 큼직한 미션 성공 버튼 -->
+    <section class="panel missions-panel" aria-label="9가지 분리수거 미션 선택">
       <div class="panel-header">
-        <span class="step-tag">STEP 1</span>
-        <h2>📷 AI 요술 카메라로 물건 비추기</h2>
-        <span id="aiStatusBadge" class="ai-status-badge ready">🤖 AI 준비 완료</span>
+        <span class="step-tag">미션 선택</span>
+        <h2>🎯 오늘의 9가지 분리수거 미션!</h2>
+        <span class="mission-guide-badge">카드를 눌러 확인하고 [미션 성공]을 눌러주세요!</span>
       </div>
 
-      <!-- 카메라 뷰포트 -->
-      <div class="camera-stage" id="cameraStage">
-        <video id="webcamVideo" autoplay playsinline muted></video>
-
-        <!-- 카메라 미실행 시 귀여운 안내 화면 -->
-        <div id="cameraPlaceholder" class="camera-placeholder">
-          <div class="camera-mascot">🤖🔍</div>
-          <h3>카메라 앞에 쓰레기 물건을 보여주세요!</h3>
-          <p>버튼을 클릭하고 스캔하면 바로 물건에 대한 설명이 나와요!<br/>카메라가 없어도 아래 <strong>9가지 물건 카드</strong>를 눌러 바로 스캔할 수 있어요!</p>
-          <div class="camera-start-btns">
-            <button id="startCameraBtn" class="primary-cute-btn" type="button">
-              📸 실시간 AI 카메라 켜기
-            </button>
-            <label for="imageUploadInput" class="secondary-cute-btn upload-label">
-              🖼️ 사진 찍기 / 불러오기
-            </label>
-            <input id="imageUploadInput" type="file" accept="image/*" hidden />
-          </div>
-        </div>
-
-        <!-- 업로드한 이미지 미리보기 -->
-        <img id="uploadedImagePreview" class="uploaded-preview hidden" alt="업로드된 물건 사진" />
-
-        <!-- 스캔 레이저 애니메이션 -->
-        <div id="scanLaser" class="scan-laser hidden"></div>
-      </div>
-
-      <!-- 카메라 조작 바 -->
-      <div class="camera-Controls-bar">
-        <button id="aiScanNowBtn" class="scan-action-btn" type="button">
-          🔍 AI 카메라로 지금 물건 인식하기!
-        </button>
-        <button id="switchCameraBtn" class="mini-cam-btn switch-cam-btn hidden" type="button" title="전면(셀카)/후면 카메라 전환">
-          🔄 카메라 전환
-        </button>
-        <button id="toggleCameraBtn" class="mini-cam-btn hidden" type="button">
-          📴 카메라 끄기
-        </button>
-      </div>
-
-      <!-- 9가지 핵심 분리수거 주제 (카메라 자동 매칭 + 클릭 즉시 인식 겸용) -->
-      <div class="quick-items-box">
-        <div class="quick-items-header">
-          <span class="quick-title">🎯 오늘 배울 9가지 분리수거 물건 (카메라에 비추거나 카드를 눌러보세요!)</span>
-          <span class="progress-counter" id="completedCountText">실천 완료: 0 / 9</span>
-        </div>
-        <div class="items-grid" id="itemsGrid">
-          <!-- JS에서 9개 아이템 카드 렌더링 -->
-        </div>
+      <div class="items-grid" id="itemsGrid">
+        <!-- JS에서 큼직한 9개 미션 카드와 큰 성공 버튼 렌더링 -->
       </div>
     </section>
 
-    <!-- 오른쪽: STEP 2 AI 물건 설명 / 쓰레기 괴물이 추천하는 배출방법 / 올바른 실천 미션 -->
-    <section class="panel ai-result-panel" aria-label="AI 물건 설명 및 분리수거 방법">
+    <!-- 오른쪽 패널: 선택한 미션 설명 + 쓰레기 괴물이 추천하는 배출방법 + 올바른 분리수거 방법 한눈에 보기 -->
+    <section class="panel detail-panel" aria-label="미션 상세 설명 및 올바른 분리수거 방법">
       <div class="panel-header">
-        <span class="step-tag">STEP 2</span>
-        <h2>💡 AI 물건 설명 &amp; 분리수거 가이드</h2>
-        <span class="voice-guide-badge">🎧 원하는 부분의 [듣기] 버튼을 눌러 들어보세요!</span>
+        <span class="step-tag step-tag-blue" id="selectedMissionBadge">미션 1</span>
+        <h2 id="panelMainTitle">🍼 미션 1 페트병 분리수거 알아보기</h2>
+        <button id="currentMissionSuccessBtn" class="big-current-success-btn" type="button">
+          ⭕ 이 미션 성공 체크하기!
+        </button>
       </div>
 
-      <!-- 스캔 전 대기 안내 화면 -->
-      <div id="aiWaitingState" class="ai-waiting-state">
-        <div class="waiting-icon">🔍✨</div>
-        <h3>버튼을 클릭해 물건을 스캔해 보세요!</h3>
-        <p>왼쪽의 <strong>[🔍 AI 카메라로 지금 물건 인식하기!]</strong> 버튼이나<br/><strong>9가지 물건 카드</strong>를 클릭하면 바로 물건에 대한 설명이 나와요!</p>
-      </div>
-
-      <div id="aiResultContainer" class="ai-result-container hidden">
-        <!-- 파트 1: AI가 물건을 인식해서 설명해주는 부분 -->
+      <div id="detailResultContainer" class="detail-result-container">
+        <!-- 파트 1: 물건 설명 카드 -->
         <div class="recognized-object-card" id="recognizedObjectCard">
-          <div class="card-top-row">
-            <div class="object-title-group">
-              <div class="object-icon-bubble" id="objectIconBubble">🍼</div>
-              <div>
-                <div class="ai-speech-tag" id="aiDetectionTag">🤖 AI 카메라 인식 결과</div>
-                <h3 id="objectTitle">미션 1 페트병</h3>
-              </div>
+          <div class="object-icon-bubble" id="objectIconBubble">🍼</div>
+          <div class="object-text-wrap">
+            <div class="object-title-row">
+              <span class="object-category-tag" id="objectCategoryTag">투명 페트병 (PET)</span>
+              <h3 id="objectTitle">미션 1 페트병</h3>
             </div>
-            <button id="speakDescBtn" class="section-speak-btn desc-speak-btn" type="button">
-              🔊 물건 설명 듣기
-            </button>
+            <p id="objectDescription" class="object-desc">
+              이 물건은 물이나 음료수를 담는 <strong>투명 페트병(PET)</strong>이에요! 병 몸통은 투명한 플라스틱이지만, 겉에 붙은 비닐 라벨과 병뚜껑은 서로 다른 재질로 만들어져 있어요.
+            </p>
           </div>
-          <p id="objectDescription" class="object-desc">
-            이 물건은 음료수나 물을 담는 <strong>투명 페트병</strong>이에요! 몸통은 투명한 플라스틱(PET)이지만, 뚜껑과 비닐 라벨은 다른 재질로 되어 있어요.
-          </p>
         </div>
 
-        <!-- 파트 2: 쓰레기 괴물이 추천하는 배출방법 (올바르지 않은 쓰레기 배출방법) -->
+        <!-- 파트 2: 쓰레기 괴물이 추천하는 배출방법 (큼직한 괴물 캐릭터와 함께 한눈에!) -->
         <div class="wrong-method-card" id="wrongMethodCard">
           <div class="wrong-header">
-            <div class="wrong-title-group">
-              <span class="siren-icon">👾</span>
-              <div>
-                <h4>쓰레기 괴물이 추천하는 배출방법</h4>
+            <div class="monster-avatar-box" aria-hidden="true">
+              <span class="monster-big-emoji">👾</span>
+            </div>
+            <div class="wrong-title-text">
+              <h4>쓰레기 괴물이 추천하는 배출방법</h4>
+              <div class="monster-quote-bubble" id="monsterWrongQuote">
+                👾 쓰레기 괴물: "크하하! 비닐 라벨이랑 뚜껑을 안 떼고 그냥 버리면 재활용 공장에서 못 써서 전부 내 밥이 된다고~!"
               </div>
             </div>
-            <button id="speakWrongBtn" class="section-speak-btn wrong-speak-btn" type="button">
-              🔊 괴물의 추천 듣기
-            </button>
           </div>
           <ul class="wrong-list" id="wrongMethodList">
             <!-- JS에서 채움 -->
           </ul>
-          <div class="monster-quote-bubble" id="monsterWrongQuote">
-            👾 쓰레기 괴물: "크하하! 페트병에 비닐이랑 뚜껑을 그대로 닫아서 버리면 재활용이 안 돼서 내 밥이 된다고~!"
-          </div>
         </div>
 
-        <!-- 파트 3: 올바른 실천 미션 (클릭하면 정답이 나타나는 퀴즈형 카드) -->
+        <!-- 파트 3: 올바른 분리수거 방법 (클릭하면 정답이 나타나는 퀴즈형 카드) -->
         <div class="correct-practice-card" id="correctPracticeCard">
           <div class="correct-header">
             <div class="correct-title-group">
               <span class="star-icon">🌟</span>
               <div>
-                <h4>어린이 환경 수비대의 올바른 실천 미션!</h4>
-                <p class="correct-sub">어떻게 올바르게 분리수거해야 할까요? 먼저 생각해보고 <strong>물음표 카드를 클릭해 정답을 확인</strong>해 보세요!</p>
+                <h4>어린이 환경 수비대의 올바른 분리수거 방법!</h4>
+                <p class="correct-sub">어떻게 올바르게 분리수거해야 할까요? <strong>물음표 카드를 클릭해 정답을 확인</strong>해 보세요!</p>
               </div>
             </div>
-            <div class="correct-btn-group">
-              <button id="revealAllCorrectBtn" class="section-speak-btn reveal-all-btn" type="button">
-                👀 정답 모두 보기
-              </button>
-              <button id="speakCorrectBtn" class="section-speak-btn correct-speak-btn" type="button">
-                🔊 올바른 실천 듣기
-              </button>
-            </div>
+            <button id="revealAllCorrectBtn" class="reveal-all-btn" type="button">
+              👀 정답 모두 보기
+            </button>
           </div>
           <div class="practice-steps" id="practiceStepsList">
             <!-- JS에서 클릭 시 정답이 공개되는 카드 생성 -->
